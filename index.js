@@ -17,7 +17,7 @@ async function handleRequest(request) {
   );
 
   let baseUrl = new URL(request.url).origin;
-  let proxyUrl = new URL(request.url).href.replaceAll(`${baseUrl}/`, "");
+  let proxyUrl = "https://doujindesu.tv" + new URL(request.url).href.replaceAll(`${baseUrl}`, "");
   if (proxyUrl) {
     const url = new URL(proxyUrl);
     url.searchParams.delete("customReferer");
