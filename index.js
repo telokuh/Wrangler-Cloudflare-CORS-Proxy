@@ -26,7 +26,7 @@ async function handleRequest(request) {
   const baseUrl = requestURL.origin;
   var proxyUrl =
   "https://doujindesu.tv" + requestURL.pathname + requestURL.search;
-  if( proxyUrl.includes(".webp"){
+  if( proxyUrl.includes(".webp") ){
      proxyUrl =
   "https://desu.photos" + requestURL.pathname + requestURL.search;
   }
