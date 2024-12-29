@@ -24,9 +24,12 @@ async function handleRequest(request) {
   );
 
   const baseUrl = requestURL.origin;
-  const proxyUrl =
+  var proxyUrl =
   "https://doujindesu.tv" + requestURL.pathname + requestURL.search;
-
+  if( proxyUrl.includes(".webp"){
+     proxyUrl =
+  "https://desu.photos" + requestURL.pathname + requestURL.search;
+  }
   console.log("Proxy URL:", proxyUrl);
 
   const defaultResponse = createDefaultResponse(baseUrl);
@@ -89,6 +92,22 @@ async function handleRequest(request) {
       const responseBody = await response.text();
       const $ = load(responseBody);
       $("script:contains('mydomain'), script[src^=//], script:contains('disqus')").remove();
+      $("img").each( functionh){
+       var src = $(this).attr("src").replace("https://doujindesu.tv", "")
+        $(this).attr("src", src)
+      })
+      $("body").append(`
+        <script>
+         $(document).ready( function(){
+
+        $("#anu > img").each( functionh){
+        var src = $(this).attr("src").replace("https://doujindesu.tv", "")
+        $(this).attr("src", src)
+      })
+
+         })
+        </script>
+      `)
       
       const modifiedBody = $.html();
       
