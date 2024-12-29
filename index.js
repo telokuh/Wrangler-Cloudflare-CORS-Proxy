@@ -12,7 +12,7 @@ async function handleRequest(request) {
   let requestURL = new URL(request.url);
 
   console.log("Incoming request URL:", requestURL);
-
+  modifiedHeaders.set("Host", "doujindesu.tv");
   modifiedHeaders.set("Referer", "https://doujindesu.tv/"); // Set a realistic Referer
   modifiedHeaders.set("Access-Control-Allow-Origin", "*");
   modifiedHeaders.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -25,7 +25,7 @@ async function handleRequest(request) {
 
   const baseUrl = requestURL.origin;
   const proxyUrl =
-    "https://doujindesu.tv" + requestURL.pathname + requestURL.search;
+  "https://doujindesu.tv" + requestURL.pathname + requestURL.search;
 
   console.log("Proxy URL:", proxyUrl);
 
@@ -39,11 +39,11 @@ async function handleRequest(request) {
 
       // Proxy the request to the specified URL
       let modifiedRequest = new Request(url.href, {
-      method: request.method,
-      headers: modifiedHeaders,
-      body: request.body,
-      redirect: "manual", // Prevent following redirects
-      });
+        method: request.method,
+        headers: modifiedHeaders,
+        body: request.body,
+        redirect: "manual", // Prevent following redirects
+      });    
 
       // Set content type and add empty body for POST requests to /themes/ajax/ch.php
       if (request.method === "POST" && requestURL.pathname === "/themes/ajax/ch.php") {
@@ -88,7 +88,8 @@ async function handleRequest(request) {
     if (response.headers.get("content-type")?.includes("text/html")) {
       const responseBody = await response.text();
       const $ = load(responseBody);
-      $("script:contains('mydomain')").remove();
+      $("script:contains('mydomain'), script[src^=//], script:contains('disqus')").remove();
+      
       const modifiedBody = $.html();
       
       console.log("Returning modified HTML response");
@@ -135,4 +136,4 @@ function createDefaultResponse(baseUrl) {
       "Content-Type": "text/html; charset=utf-8",
     },
   });
-}
+        }
