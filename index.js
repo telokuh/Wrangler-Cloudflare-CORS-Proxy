@@ -26,7 +26,7 @@ async function handleRequest(request) {
   const baseUrl = requestURL.origin;
   var proxyUrl =
   "https://doujindesu.tv" + requestURL.pathname + requestURL.search;
-  if( proxyUrl.includes(".webp") ){
+  if( proxyUrl.includes(".webp")){
      proxyUrl =
   "https://desu.photos" + requestURL.pathname + requestURL.search;
   }
@@ -91,17 +91,17 @@ async function handleRequest(request) {
     if (response.headers.get("content-type")?.includes("text/html")) {
       const responseBody = await response.text();
       const $ = load(responseBody);
-      $("script:contains('mydomain'), script[src^=//], script:contains('disqus')").remove();
-      $("img").each( functionh){
-       var src = $(this).attr("src").replace("https://doujindesu.tv", "")
+      $("script:contains('mydomain'), script[src^=//], script:contains('disqus')").remove();    
+      $("img").each(function () {
+        var src = $(this).attr("src").replace("https://doujindesu.tv", "");
         $(this).attr("src", src)
-      })
+      });
       $("body").append(`
         <script>
          $(document).ready( function(){
 
-        $("#anu > img").each( functionh){
-        var src = $(this).attr("src").replace("https://doujindesu.tv", "")
+        $("#anu > img").each( function(){
+        var src = $(this).attr("src").replace("https://desu.photos", "")
         $(this).attr("src", src)
       })
 
@@ -155,4 +155,4 @@ function createDefaultResponse(baseUrl) {
       "Content-Type": "text/html; charset=utf-8",
     },
   });
-        }
+  }
